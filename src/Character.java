@@ -11,7 +11,7 @@ public class Character {
     public int dx = 1;
     public int dy = 1;
     public int width =100;
-    public int height = 100;
+    public int height = 0;
     public boolean isAlive;
     public Rectangle hitbox;
 
@@ -26,7 +26,7 @@ public class Character {
         dx = paramDx;
         dy = paramDy;
         width = paramWidth;
-        height = paramHeight;
+        height = paramWidth;
         hitbox = new Rectangle(xpos, ypos, width, height);
 
     }
@@ -36,7 +36,7 @@ public class Character {
         xpos = xpos + dx;
         ypos = ypos + dy;
 
-        if (ypos >= 600 - height || ypos <= 0) {
+        if (ypos >= 700 - height || ypos <= 0) {
             dy = -dy;
         }
 
@@ -48,6 +48,7 @@ public class Character {
 
         hitbox = new Rectangle(xpos, ypos, width, height);
     }
+
 
     public void wrap(){
         xpos = xpos + dx;
@@ -63,6 +64,7 @@ public class Character {
             ypos = -height;
 
         }
+
 
         hitbox = new Rectangle(xpos, ypos, width, height);
     }

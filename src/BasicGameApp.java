@@ -22,6 +22,17 @@ public class BasicGameApp implements Runnable {
     //Declare the variables used in the program
     //You can set their initial values too
 
+    Character  CartoonCupcake;
+    Character Cookie;
+    Character CookieMonster;
+    Character CookieCrumbs;
+    boolean cookieVsCookieMonster;
+    boolean isCookieWhole;
+    boolean cupcakeVsCookieMonster;
+    boolean cupcakeVsCookie;
+
+
+
     //Sets the width and height of the program window
     final int WIDTH = 1000;
     final int HEIGHT = 700;
@@ -48,8 +59,25 @@ public class BasicGameApp implements Runnable {
 
         setUpGraphics();
 
-        backgroundPic = Toolkit.getDefaultToolkit().getImage("");
+        backgroundPic = Toolkit.getDefaultToolkit().getImage("candyland.jpg");
+        CartoonCupcake = new Character(400, 300, (int)(Math.random()*5), (int)(Math.random()*5), (int)(Math.random()*100+50),(int)(Math.random()*100+50));
+        CartoonCupcake.xpos = 400;
+        CartoonCupcake.ypos = 300;
+        CartoonCupcake.name = "CartoonCupcake";
+        CartoonCupcake.pic = Toolkit.getDefaultToolkit().getImage("Cartoon-Cupcake-Transparent-PNG.png");
 
+        Cookie = new Character(200,200,(int)(Math.random()*5),(int)(Math.random()*5),(int)(Math.random()*100+50),(int)(Math.random()*100+50));
+        Cookie.xpos = 200;
+        Cookie.ypos = 200;
+        Cookie.name = "Cookie";
+        Cookie.pic = Toolkit.getDefaultToolkit().getImage("cookiee.png");
+
+
+        CookieMonster = new Character(500,600,(int)(Math.random()*5),(int)(Math.random()*5),(int)(Math.random()*50+10),(int)(Math.random()*50+10));
+        CookieMonster.xpos = 300;
+        CookieMonster.ypos = 300;
+        CookieMonster.name = "CookieMonster";
+        CookieMonster.pic = Toolkit.getDefaultToolkit().getImage("cookiemonster.png");
 
         //variable and objects
         //create (construct) the objects needed for the game
@@ -68,6 +96,7 @@ public class BasicGameApp implements Runnable {
         //for the moment we will loop things forever.
         while (true) {
             moveThings();  //move all the game objects
+            collision();
             render();  // paint the graphics
             pause(10); // sleep for 10 ms
         }
@@ -75,6 +104,57 @@ public class BasicGameApp implements Runnable {
 
     public void moveThings() {
         //call the move() code for each object
+        Cookie.move();
+        Cookie.printInfo();
+
+        CartoonCupcake.wrap();
+        CartoonCupcake.printInfo();
+
+        CookieMonster.move();
+        CookieMonster.printInfo();
+
+    }
+
+    public void collision(){
+        if (Cookie.hitbox.intersects(CookieMonster.hitbox) == true && cookieVsCookieMonster==false){
+            cookieVsCookieMonster = true;
+            isCookieWhole = !isCookieWhole;
+        }
+        if (Cookie.hitbox.intersects(CookieMonster.hitbox) == false){
+            cookieVsCookieMonster = false;
+        }
+
+       if (isCookieWhole ==false){
+           Cookie.pic = Toolkit.getDefaultToolkit().getImage("Cookie Crumbs.png");
+       }
+       else if(isCookieWhole ==true){
+           Cookie.pic = Toolkit.getDefaultToolkit().getImage("cookiee.png");
+       }
+
+       if (CookieMonster.hitbox.intersects(CartoonCupcake.hitbox)==true){
+           cupcakeVsCookieMonster = true;
+           CookieMonster.width = CookieMonster.width + 1;
+           CookieMonster.height = CookieMonster.height + 1;
+       }
+
+       if (Cookie.hitbox.intersects(CartoonCupcake.hitbox)==true){
+           cupcakeVsCookie = true;
+           Cookie.dx = Cookie.dx+1;
+           Cookie.dy = Cookie.dy+1;
+       }
+        if (Cookie.hitbox.intersects(CartoonCupcake.hitbox) == false){
+            cupcakeVsCookie = false;
+        }
+
+       if (CookieMonster.dx < 0){
+           CookieMonster.pic = Toolkit.getDefaultToolkit().getImage("cookiemonsterflip.png");
+//           isCookieMonsterFlipped = !isCookieMonsterFlipped;
+       }
+       else if (CookieMonster.dx >= 0){
+           CookieMonster.pic = Toolkit.getDefaultToolkit().getImage("cookiemonster.png");
+       }
+
+
     }
 
     //Paints things on the screen using bufferStrategy
@@ -83,6 +163,15 @@ public class BasicGameApp implements Runnable {
         g.clearRect(0, 0, WIDTH, HEIGHT);
 
         //draw the images
+        g.drawImage(backgroundPic, 0,0, WIDTH, HEIGHT, null);
+        g.drawImage(CartoonCupcake.pic, CartoonCupcake.xpos, CartoonCupcake.ypos, CartoonCupcake.width, CartoonCupcake.height, null);
+        g.drawImage(Cookie.pic, Cookie.xpos, Cookie.ypos, Cookie.width, Cookie.height, null);
+        g.drawImage(CookieMonster.pic, CookieMonster.xpos, CookieMonster.ypos, CookieMonster.width, CookieMonster.height, null);
+
+
+//        g.drawRect(CartoonCupcake.hitbox.x, CartoonCupcake.hitbox.y, CartoonCupcake.hitbox.width, CartoonCupcake.hitbox.height);
+//        g.drawRect(Cookie.hitbox.x, Cookie.hitbox.y, Cookie.hitbox.width, Cookie.hitbox.height);
+//        g.drawRect(CookieMonster.hitbox.x, CookieMonster.hitbox.y, CookieMonster.hitbox.width, CookieMonster.hitbox.height);
 
         g.dispose();
         bufferStrategy.show();
