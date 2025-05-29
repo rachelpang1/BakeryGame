@@ -11,6 +11,8 @@
 import java.awt.Graphics2D;
 import java.awt.image.BufferStrategy;
 import java.awt.*;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -30,6 +32,7 @@ public class BasicGameApp implements Runnable {
     boolean isCookieWhole;
     boolean cupcakeVsCookieMonster;
     boolean cupcakeVsCookie;
+    ArrayList<Desserts> cherriesList = new ArrayList<>();
 
 
 
@@ -90,7 +93,7 @@ public class BasicGameApp implements Runnable {
 //
 // put your code to do things here.
 
-    // main thread
+    // main threadv
     // this is the code that plays the game after you set things up
     public void run() {
         //for the moment we will loop things forever.
